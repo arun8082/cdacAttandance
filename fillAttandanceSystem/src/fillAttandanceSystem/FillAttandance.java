@@ -22,12 +22,11 @@ import org.openqa.selenium.support.ui.Select;
 public class FillAttandance {
 
 	public static void main(String[] args) {
-	/*	System.setProperty("webdriver.chrome.driver", "/cdacAttandance/fillAttandanceSystem/driver/chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver", "/cdacAttandance/fillAttandanceSystem/driver/chromedriver.exe");
 		WebDriver driver = new ChromeDriver();
 		driver.get("https://pramani.cdac.in/pramANi/UI/Login?module=LDAP&realm=%2F&goto=https%3A%2F%2Fihrms.cdac.in%3A443%2F&gx_charset=UTF-8");
-		//
+		
 		//driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-		String title = driver.getTitle();
 		driver.findElement(By.id("IDToken1")).sendKeys("arunendra");
 		driver.findElement(By.id("IDToken2")).sendKeys("Welcome@123");
 		driver.findElement(By.name("Login.Submit")).submit();
@@ -37,7 +36,7 @@ public class FillAttandance {
 	    
 		ArrayList<String> tabs = new ArrayList<String> (driver.getWindowHandles());
 		driver.switchTo().window(tabs.get(1));
-		
+		/*
 		driver.findElement(By.name("txt_entry_date")).sendKeys("14/11/2019");
 		driver.findElement(By.name("cmb_entry_hour")).sendKeys("09");
 		driver.findElement(By.name("cmb_entry_min")).sendKeys("30");
@@ -55,16 +54,27 @@ public class FillAttandance {
 			}
 			Workbook workbook=new HSSFWorkbook(new FileInputStream(file));
 			Sheet sheet =workbook.getSheet("Sheet0");
-			Row row = sheet.getRow(0);
-			row.getCell(0);
+			Row row;
+			
+			Select reason=new Select(driver.findElement(By.name("ddlEntrySlipReason")));
+			reason.selectByVisibleText("Other");
+			
+			for(int i=1;i<=sheet.getLastRowNum();i++) {				
+				row = sheet.getRow(i);
+				
+				driver.findElement(By.name("txt_entry_date")).sendKeys(row.getCell(0).toString());
+				driver.findElement(By.name("cmb_entry_hour")).sendKeys(row.getCell(1).toString().split(":")[0]);
+				driver.findElement(By.name("cmb_entry_min")).sendKeys(row.getCell(1).toString().split(":")[1]);
+				driver.findElement(By.name("cmb_exit_hour")).sendKeys(row.getCell(2).toString().split(":")[0]);
+				driver.findElement(By.name("cmb_exit_min")).sendKeys(row.getCell(2).toString().split(":")[1]);		
+				reason.selectByVisibleText("Other");
+				driver.findElement(By.name("entrySlipReason")).sendKeys(row.getCell(3).toString());
+				//driver.findElement(By.id("Save232")).click();
+				Thread.sleep(100);
+			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
-		
-		//System.out.println(el.getAttribute("href"));
-		
-		//driver.close();
+		}		
 	}
 
 }
