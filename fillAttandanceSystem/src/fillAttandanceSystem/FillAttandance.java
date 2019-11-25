@@ -30,6 +30,12 @@ public class FillAttandance {
 	public static void main(String[] args) {
 		List<String> errList = new ArrayList<String>();
 		Scanner sc=new Scanner(System.in);		
+		
+		System.out.print("Enter User Name: ");
+		String userName=sc.next().trim(); 
+		System.out.print("\nEnter Password: ");
+		String password =sc.next().trim();
+		
 
 		System.setProperty("webdriver.chrome.driver", "/cdacAttandance/fillAttandanceSystem/driver/chromedriver.exe");
 		WebDriver driver = new ChromeDriver();
@@ -37,10 +43,9 @@ public class FillAttandance {
 				"https://pramani.cdac.in/pramANi/UI/Login?module=LDAP&realm=%2F&goto=https%3A%2F%2Fihrms.cdac.in%3A443%2F&gx_charset=UTF-8");
 
 		// driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-		System.out.print("Enter User Name: ");
-		driver.findElement(By.id("IDToken1")).sendKeys(sc.next().trim());
-		System.out.print("\nEnter Password: ");
-		driver.findElement(By.id("IDToken2")).sendKeys(sc.next().trim());
+		
+		driver.findElement(By.id("IDToken1")).sendKeys(userName);
+		driver.findElement(By.id("IDToken2")).sendKeys(password);
 		driver.findElement(By.name("Login.Submit")).submit();
 		WebElement el = driver.findElements(By.xpath("//ul[@class='sf-menu sf-js-enabled']/li/ul/li/a")).get(9);
 		String a = "window.open('" + el.getAttribute("href") + "','_blank');"; // replace link with your desired link
